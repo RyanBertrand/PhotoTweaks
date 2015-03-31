@@ -70,7 +70,7 @@
     [self.view addSubview:self.photoView];
     
     CGFloat btnWidth = self.view.frame.size.width / 2;
-    UIImage *icon = [UIImage bundleImageNamed:@"mirror-vertical"];
+    UIImage *icon = [UIImage bundleImageNamed:@"flip_v"];
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -83,7 +83,7 @@
     [btn centerVertically];
     [self.view addSubview:btn];
     
-    icon = [UIImage bundleImageNamed:@"mirror-horizontal"];
+    icon = [UIImage bundleImageNamed:@"flip_h"];
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.titleLabel.textAlignment = NSTextAlignmentCenter;
     btn.frame = CGRectMake(btnWidth * 1, CGRectGetHeight(self.view.frame) - 65, btnWidth, 60);

@@ -9,6 +9,7 @@
 #import "PhotoTweakView.h"
 #import "UIColor+Tweak.h"
 #import <math.h>
+#import "UIImage+PTBundleImages.h"
 
 static const int kCropLines = 2;
 static const int kGridLines = 9;
@@ -524,7 +525,7 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
         _slider.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) - 135);
         _slider.minimumValue = 0.0f;
         _slider.maximumValue = 1.0f;
-        [_slider setThumbImage:[UIImage imageNamed:@"flip-knob"] forState:UIControlStateNormal];
+        [_slider setThumbImage:[UIImage bundleImageNamed:@"flipKnob"] forState:UIControlStateNormal];
         [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_slider addTarget:self action:@selector(sliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
         _slider.value = 0.5;

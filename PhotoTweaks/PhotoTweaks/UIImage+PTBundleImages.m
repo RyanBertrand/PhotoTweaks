@@ -15,9 +15,10 @@ static NSString * const kBundle = @"PhotoTweaks.bundle";
 +(UIImage *)bundleImageNamed:(NSString *)name
 {
     NSString *resourceName = [NSString stringWithFormat:@"%@/%@", kBundle, name];
-    NSURL *url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"ttf"];
-    NSData *imgData = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [UIImage imageWithData:imgData];
+    //NSURL *url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"png"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"png"];
+    UIImage *img = [UIImage imageWithContentsOfFile:path];
+    NSLog(@"Trying to find from %@:\nImage = %@", path, img);
     return img;
 }
 
