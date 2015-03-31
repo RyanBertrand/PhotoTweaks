@@ -39,6 +39,7 @@
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setTranslucent:NO];
     self.title = @"Editor";
     
