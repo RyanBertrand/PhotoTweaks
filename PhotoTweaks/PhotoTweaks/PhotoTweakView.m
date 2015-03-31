@@ -524,17 +524,16 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
         _slider.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) - 135);
         _slider.minimumValue = 0.0f;
         _slider.maximumValue = 1.0f;
+        [_slider setThumbImage:[UIImage imageNamed:@"flip-knob"] forState:UIControlStateNormal];
         [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_slider addTarget:self action:@selector(sliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
         _slider.value = 0.5;
         [self addSubview:_slider];
         
-        _resetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _resetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         _resetBtn.frame = CGRectMake(0, 0, 60, 20);
         _resetBtn.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) - 95);
         _resetBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [_resetBtn setTitleColor:[UIColor resetButtonColor] forState:UIControlStateNormal];
-        [_resetBtn setTitleColor:[UIColor resetButtonHighlightedColor] forState:UIControlStateHighlighted];
         [_resetBtn setTitle:@"RESET" forState:UIControlStateNormal];
         [_resetBtn addTarget:self action:@selector(resetBtnTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_resetBtn];

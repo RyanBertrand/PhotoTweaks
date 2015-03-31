@@ -10,12 +10,16 @@
 #import "PhotoTweakView.h"
 #import "UIColor+Tweak.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "UIButton+PTButtonTitleTweak.h"
 
 @interface PhotoTweaksViewController ()
-
-@property (strong, nonatomic) PhotoTweakView *photoView;
+@property(nonatomic, strong)UIImage *originalImage;
+@property(nonatomic, strong)PhotoTweakView *photoView;
+@property(nonatomic, assign)BOOL mirrorHorizontal;
+@property(nonatomic, assign)BOOL mirrorVertical;
 
 @end
+
 
 @implementation PhotoTweaksViewController
 
@@ -23,7 +27,9 @@
 {
     if (self = [super init]) {
         _image = image;
+        _originalImage = image;
         _autoSaveToLibray = YES;
+        _tintColor = [UIColor saveButtonColor];
     }
     return self;
 }
@@ -32,7 +38,8 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBarHidden = YES;
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.title = @"Editor";
     
     if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
         self.automaticallyAdjustsScrollViewInsets = NO;
@@ -40,6 +47,13 @@
     
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor photoTweakCanvasBackgroundColor];
+    
+    [self setUpNavigationBar];
+}
+
+-(void)setUpNavigationBar{
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelBtnTapped)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(saveBtnTapped)];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -51,27 +65,64 @@
 {
     self.photoView = [[PhotoTweakView alloc] initWithFrame:self.view.bounds image:self.image];
     self.photoView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.photoView.tintColor = self.tintColor;
     [self.view addSubview:self.photoView];
     
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(8, CGRectGetHeight(self.view.frame) - 40, 60, 40);
-    cancelBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelBtn setTitleColor:[UIColor cancelButtonColor] forState:UIControlStateNormal];
-    [cancelBtn setTitleColor:[UIColor cancelButtonHighlightedColor] forState:UIControlStateHighlighted];
-    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-    [cancelBtn addTarget:self action:@selector(cancelBtnTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cancelBtn];
+    CGFloat btnWidth = self.view.frame.size.width / 2;
+    UIImage *icon = [UIImage imageNamed:@"mirror-vertical"];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    btn.frame = CGRectMake(btnWidth * 0, CGRectGetHeight(self.view.frame) - 65, btnWidth, 60);
+    [btn setTitle:@"Vertical" forState:UIControlStateNormal];
+    [btn setImage:icon forState:UIControlStateNormal];
+    [btn setTitleColor:self.tintColor forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [btn addTarget:self action:@selector(mirrorVertical:) forControlEvents:UIControlEventTouchUpInside];
+    [btn centerVertically];
+    [self.view addSubview:btn];
     
-    UIButton *cropBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cropBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-    cropBtn.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 60, CGRectGetHeight(self.view.frame) - 40, 60, 40);
-    [cropBtn setTitle:@"Done" forState:UIControlStateNormal];
-    [cropBtn setTitleColor:[UIColor saveButtonColor] forState:UIControlStateNormal];
-    [cropBtn setTitleColor:[UIColor saveButtonHighlightedColor] forState:UIControlStateHighlighted];
-    cropBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-    [cropBtn addTarget:self action:@selector(saveBtnTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cropBtn];
+    icon = [UIImage imageNamed:@"mirror-horizontal"];
+    btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    btn.frame = CGRectMake(btnWidth * 1, CGRectGetHeight(self.view.frame) - 65, btnWidth, 60);
+    [btn setTitle:@"Horizontal" forState:UIControlStateNormal];
+    [btn setImage:icon forState:UIControlStateNormal];
+    [btn setTitleColor:self.tintColor forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [btn addTarget:self action:@selector(mirrorHorizontal:) forControlEvents:UIControlEventTouchUpInside];
+    [btn centerVertically];
+    [self.view addSubview:btn];
+}
+
+- (CATransform3D)rotateTransform:(CATransform3D)initialTransform
+{
+    CATransform3D transform = initialTransform;
+    transform = CATransform3DRotate(transform, self.mirrorHorizontal * M_PI, 0, 1, 0);
+    transform = CATransform3DRotate(transform, self.mirrorVertical * M_PI, 1, 0, 0);
+    return transform;
+}
+
+- (void)rotateStateDidChange:(BOOL)vertical
+{
+    UIViewAnimationOptions opts = (vertical ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromRight);
+    [UIView transitionWithView:self.photoView.photoContentView.imageView
+                      duration:0.4
+                       options:opts
+                    animations:^{
+                        CATransform3D transform = [self rotateTransform:CATransform3DIdentity];
+                        self.photoView.photoContentView.imageView.layer.transform = transform;
+                    } completion:NULL];
+}
+
+-(void)mirrorVertical:(id)sender{
+    self.mirrorVertical = !self.mirrorVertical;
+    [self rotateStateDidChange:YES];
+}
+
+-(void)mirrorHorizontal:(id)sender{
+    self.mirrorHorizontal = !self.mirrorHorizontal;
+    [self rotateStateDidChange:NO];
 }
 
 - (void)cancelBtnTapped
@@ -81,7 +132,7 @@
 
 - (void)saveBtnTapped
 {
-    CGAffineTransform transform = CGAffineTransformIdentity;
+    CGAffineTransform transform = CATransform3DGetAffineTransform([self rotateTransform:CATransform3DIdentity]);
     
     // translate
     CGPoint translation = [self.photoView photoTranslation];

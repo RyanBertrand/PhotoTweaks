@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "PhotoTweaksViewController.h"
+#import "UIColor+Tweak.h"
 
 @interface AppDelegate () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PhotoTweaksViewControllerDelegate>
 
@@ -35,6 +36,7 @@
     PhotoTweaksViewController *photoTweaksViewController = [[PhotoTweaksViewController alloc] initWithImage:image];
     photoTweaksViewController.delegate = self;
     photoTweaksViewController.autoSaveToLibray = YES;
+    photoTweaksViewController.tintColor = [UIColor saveButtonColor];
     [picker pushViewController:photoTweaksViewController animated:YES];
 }
 

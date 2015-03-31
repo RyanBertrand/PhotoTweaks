@@ -16,9 +16,14 @@
 @interface PhotoTweaksViewController : UIViewController
 
 /**
+ Tint color for UI elements.
+ */
+@property (nonatomic, strong) UIColor *tintColor;
+
+/**
  Image to process.
  */
-@property (nonatomic, strong, readonly) UIImage *image;
+@property (nonatomic, strong) UIImage *image;
 
 /**
  Flag indicating whether the image cropped will be saved to photo library automatically. Defaults to YES.
