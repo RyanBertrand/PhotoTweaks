@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
   spec.name             = 'PhotoTweaks'
-  spec.version          = '1.1.1'
+  spec.version          = '1.2.0'
   spec.license          = 'MIT' 
   spec.homepage         = 'https://github.com/itouch2/PhotoTweaks'
   spec.authors          = {'Tu You' => 'yoututouch@gmail.com'}
   spec.summary          = 'Drag, Rotate, Scale and Crop.'
-  spec.source           = {:git => 'https://github.com/RyanBertrand/PhotoTweaks.git', :tag => '1.1.1'}
+  spec.source           = {:git => 'https://github.com/RyanBertrand/PhotoTweaks.git', :tag => '1.2.0'}
   spec.source_files     = 'PhotoTweaks/PhotoTweaks/*.{h,m}'
   spec.framework        = 'Foundation', 'CoreGraphics', 'UIKit'
   spec.requires_arc     = true
