@@ -11,6 +11,7 @@
 #import "UIColor+Tweak.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIButton+PTButtonTitleTweak.h"
+#import "UIImage+PTBundleImages.h"
 
 @interface PhotoTweaksViewController ()
 @property(nonatomic, strong)UIImage *originalImage;
@@ -69,7 +70,7 @@
     [self.view addSubview:self.photoView];
     
     CGFloat btnWidth = self.view.frame.size.width / 2;
-    UIImage *icon = [UIImage imageNamed:@"mirror-vertical"];
+    UIImage *icon = [UIImage bundleImageNamed:@"mirror-vertical"];
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -82,7 +83,7 @@
     [btn centerVertically];
     [self.view addSubview:btn];
     
-    icon = [UIImage imageNamed:@"mirror-horizontal"];
+    icon = [UIImage bundleImageNamed:@"mirror-horizontal"];
     btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.titleLabel.textAlignment = NSTextAlignmentCenter;
     btn.frame = CGRectMake(btnWidth * 1, CGRectGetHeight(self.view.frame) - 65, btnWidth, 60);

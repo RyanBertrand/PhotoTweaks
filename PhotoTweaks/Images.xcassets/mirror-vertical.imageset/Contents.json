@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "flip_v.png"
+      "filename" : "photo_tweaks_flip_v.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "flip_v@2x.png"
+      "filename" : "photo_tweaks_flip_v@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "flip_v@3x.png"
+      "filename" : "photo_tweaks_flip_v@3x.png"
     }
   ],
   "info" : {
