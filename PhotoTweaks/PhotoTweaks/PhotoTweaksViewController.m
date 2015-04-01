@@ -169,6 +169,7 @@
             }
         }];
     }
+    CGImageRelease(imageRef);
     
     [self.navigationController popViewControllerAnimated:YES];
 }
