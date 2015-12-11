@@ -18,7 +18,8 @@
 @property(nonatomic, strong)PhotoTweakView *photoView;
 @property(nonatomic, assign)BOOL mirrorHorizontal;
 @property(nonatomic, assign)BOOL mirrorVertical;
-
+@property(nonatomic, strong)UIActivityIndicatorView *spinnerView;
+@property(nonatomic, strong)CropOptionsView *cropOptionsView;
 @end
 
 
@@ -56,6 +57,11 @@
 -(void)setUpNavigationBar{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelBtnTapped)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(saveBtnTapped)];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [btn setTitle:@"Reset Photo" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(resetBtnTapped) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = btn;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -70,31 +76,16 @@
     self.photoView.tintColor = self.tintColor;
     [self.view addSubview:self.photoView];
     
-    CGFloat btnWidth = self.view.frame.size.width / 2;
-    UIImage *icon = [UIImage bundleImageNamed:@"flip_v"];
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    btn.frame = CGRectMake(btnWidth * 0, CGRectGetHeight(self.view.frame) - 65, btnWidth, 60);
-    [btn setTitle:@"Vertical" forState:UIControlStateNormal];
-    [btn setImage:icon forState:UIControlStateNormal];
-    [btn setTitleColor:self.tintColor forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [btn addTarget:self action:@selector(mirrorVertical:) forControlEvents:UIControlEventTouchUpInside];
-    [btn centerVertically];
-    [self.view addSubview:btn];
+    self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.spinnerView.alpha = 0.0;
+    [self.spinnerView startAnimating];
+    self.spinnerView.center = self.view.center;
+    [self.view addSubview:self.spinnerView];
+    [self.view sendSubviewToBack:self.spinnerView];
     
-    icon = [UIImage bundleImageNamed:@"flip_h"];
-    btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    btn.frame = CGRectMake(btnWidth * 1, CGRectGetHeight(self.view.frame) - 65, btnWidth, 60);
-    [btn setTitle:@"Horizontal" forState:UIControlStateNormal];
-    [btn setImage:icon forState:UIControlStateNormal];
-    [btn setTitleColor:self.tintColor forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [btn addTarget:self action:@selector(mirrorHorizontal:) forControlEvents:UIControlEventTouchUpInside];
-    [btn centerVertically];
-    [self.view addSubview:btn];
+    self.cropOptionsView = [[CropOptionsView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 60, self.view.frame.size.width, 60)];
+    self.cropOptionsView.delegate = self;
+    [self.view addSubview:self.cropOptionsView];
 }
 
 - (CATransform3D)rotateTransform:(CATransform3D)initialTransform
@@ -132,14 +123,40 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)resetBtnTapped
+{
+    [self.photoView resetPhoto];
+}
+
 - (void)saveBtnTapped
 {
+    //Show spinner here
+    typeof(self)weakSelf = self;
+    [UIView animateWithDuration:0.15 animations:^{
+        for (UIView *sView in self.view.subviews) {
+            if(sView == self.spinnerView){
+                //Show spinner
+                sView.alpha = 1.0;
+            }
+            else{
+                //Hide spinner
+                sView.alpha = 0.0;
+            }
+        }
+    } completion:^(BOOL finished) {
+        [weakSelf actuallySaveImage];
+    }];
+}
+
+-(void)actuallySaveImage{
+    NSDate *start = [NSDate date];
+    
     CGAffineTransform transform = CATransform3DGetAffineTransform([self rotateTransform:CATransform3DIdentity]);
     
     // translate
     CGPoint translation = [self.photoView photoTranslation];
     transform = CGAffineTransformTranslate(transform, translation.x, translation.y);
-
+    
     // rotate
     transform = CGAffineTransformRotate(transform, self.photoView.angle);
     
@@ -171,7 +188,9 @@
     }
     CGImageRelease(imageRef);
     
-    [self.navigationController popViewControllerAnimated:YES];
+    NSDate *methodFinish = [NSDate date];
+    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:start];
+    NSLog(@"PhotoTweaksViewController.m :: saveBtnTapped :: Execution Time: %f", executionTime);
 }
 
 - (CGImageRef)newScaledImage:(CGImageRef)source withOrientation:(UIImageOrientation)orientation toSize:(CGSize)size withQuality:(CGInterpolationQuality)quality
@@ -207,7 +226,21 @@
                                                  CGImageGetColorSpace(source),
                                                  (CGBitmapInfo)kCGImageAlphaNoneSkipFirst  //CGImageGetBitmapInfo(source)
                                                  );
-    
+    if(!context){
+        //Context was fucked.  This happens with Dexis images.  Lets try to build one using the true bits and bitmap info
+        context = CGBitmapContextCreate(NULL,
+                                        size.width,
+                                        size.height,
+                                        CGImageGetBitsPerComponent(source),
+                                        0,
+                                        CGImageGetColorSpace(source),
+                                        CGImageGetBitmapInfo(source)
+                                        );
+        if(!context){
+            //If the retry fails...fuck it lets bail!
+            return nil;
+        }
+    }
     CGContextSetInterpolationQuality(context, quality);
     CGContextTranslateCTM(context,  size.width/2,  size.height/2);
     CGContextRotateCTM(context,rotation);
@@ -247,6 +280,10 @@
                                                  0,
                                                  CGImageGetColorSpace(source),
                                                  CGImageGetBitmapInfo(source));
+    if(!context){
+        return nil;
+    }
+    
     CGContextSetFillColorWithColor(context, [[UIColor clearColor] CGColor]);
     CGContextFillRect(context, CGRectMake(0, 0, outputSize.width, outputSize.height));
     
@@ -271,15 +308,13 @@
     return resultRef;
 }
 
+#pragma mark - Aspect Ratio Delegate
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+-(void)cropOptionsViewDidSelectAspectRatio:(CropAspectRatio)ratio{
+    [UIView setAnimationsEnabled:NO];
+    [self.photoView resetPhoto];
+    [self.photoView.cropView setAspectRatio:ratio];
+    [UIView setAnimationsEnabled:YES];
 }
 
 @end

@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhotoTweakView.h"
 
 @protocol PhotoTweaksViewControllerDelegate;
 
 /**
  The photo tweaks controller.
  */
-@interface PhotoTweaksViewController : UIViewController
+@interface PhotoTweaksViewController : UIViewController <CropOptionsViewDelegate>
 
 /**
  Tint color for UI elements.

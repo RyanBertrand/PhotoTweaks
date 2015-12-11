@@ -155,6 +155,8 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
 @end
 
 @implementation CropView
+@synthesize photoSize;
+@synthesize photoScale;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -425,6 +427,65 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
     }];
 }
 
+-(void)setCropSize:(CGSize)size{
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, size.width, size.height);
+    if ([self.delegate respondsToSelector:@selector(cropEnded:)]) {
+        [self.delegate cropEnded:self];
+    }
+}
+
+-(void)setAspectRatio:(CropAspectRatio)aspectRatio{
+    CGFloat currentImageRatio = self.photoSize.width / self.photoSize.height;
+    CGFloat targetImageRatio;
+    
+    if(aspectRatio == CropAspectRatioOriginal){
+        targetImageRatio = currentImageRatio;
+    }
+    else if(aspectRatio == CropAspectRatioSquare){
+        targetImageRatio = 1.0f / 1.0f;
+    }
+    else if(aspectRatio == CropAspectRatio3to2){
+        targetImageRatio = 3.0f / 2.0f;
+    }
+    else if(aspectRatio == CropAspectRatio5to3){
+        targetImageRatio = 5.0f / 3.0f;
+    }
+    else if(aspectRatio == CropAspectRatio4to3){
+        targetImageRatio = 4.0f / 3.0f;
+    }
+    else if(aspectRatio == CropAspectRatio5to4){
+        targetImageRatio = 5.0f / 4.0f;
+    }
+    else if(aspectRatio == CropAspectRatio6to4){
+        targetImageRatio = 6.0f / 4.0f;
+    }
+    else if(aspectRatio == CropAspectRatio7to5){
+        targetImageRatio = 7.0f / 5.0f;
+    }
+    else if(aspectRatio == CropAspectRatio10to8){
+        targetImageRatio = 10.0f / 8.0f;
+    }
+    else if(aspectRatio == CropAspectRatio16to9){
+        targetImageRatio = 16.0f / 9.0f;
+    }
+    else{
+        NSLog(@"UNKNOWN ASPECT RATIO!!!!!");
+        return;
+    }
+    
+    CGSize targetSize;
+    CGSize scaledPhotoSize = CGSizeMake(floor((self.photoSize.width * self.photoScale)), floor((self.photoSize.height * self.photoScale)));
+
+    if (currentImageRatio > targetImageRatio) {
+        // Width > Height
+        targetSize = CGSizeMake(targetImageRatio * scaledPhotoSize.height, scaledPhotoSize.height);
+    } else {
+        // Height > Width
+        targetSize = CGSizeMake(scaledPhotoSize.width, scaledPhotoSize.width / targetImageRatio);
+    }
+    [self setCropSize:targetSize];
+}
+
 @end
 
 @interface PhotoTweakView () <UIScrollViewDelegate, CropViewDelegate>
@@ -434,9 +495,17 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UISlider *slider;
 @property (nonatomic, strong) UIButton *resetBtn;
+@property (nonatomic, strong) UIButton *flipHorizontalBtn;
+@property (nonatomic, strong) UIButton *flipVerticalBtn;
+
 @property (nonatomic, assign) CGSize originalSize;
 
 @property (nonatomic, assign) BOOL manualZoomed;
+
+// mirror
+@property (nonatomic, assign) BOOL mirrorVertical;
+@property (nonatomic, assign) BOOL mirrorHorizontal;
+
 
 // masks
 @property (nonatomic, strong) UIView *topMask;
@@ -504,6 +573,8 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
         _cropView = [[CropView alloc] initWithFrame:self.scrollView.frame];
         _cropView.center = self.scrollView.center;
         _cropView.delegate = self;
+        _cropView.photoSize = image.size;
+        _cropView.photoScale = scale;
         [self addSubview:_cropView];
         
         UIColor *maskColor = [UIColor maskColor];
@@ -521,8 +592,8 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
         [self addSubview:_rightMask];
         [self updateMasks:NO];
         
-        _slider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 240, 20)];
-        _slider.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) - 135);
+        _slider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 200, 30)];
+        _slider.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) - 85);
         _slider.minimumValue = 0.0f;
         _slider.maximumValue = 1.0f;
         [_slider setThumbImage:[UIImage bundleImageNamed:@"flipKnob"] forState:UIControlStateNormal];
@@ -531,15 +602,31 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
         _slider.value = 0.5;
         [self addSubview:_slider];
         
-        _resetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-        _resetBtn.frame = CGRectMake(0, 0, 60, 20);
-        _resetBtn.center = CGPointMake(CGRectGetWidth(self.bounds) / 2, CGRectGetHeight(self.bounds) - 95);
-        _resetBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [_resetBtn setTitle:@"RESET" forState:UIControlStateNormal];
-        [_resetBtn addTarget:self action:@selector(resetBtnTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_resetBtn];
-        
         _originalPoint = [self convertPoint:self.scrollView.center toView:self];
+        
+        CGFloat btnWidth = 50;
+        UIImage *icon = [UIImage bundleImageNamed:@"flip_v"];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        btn.frame = CGRectMake(0, CGRectGetHeight(self.frame) - 115, btnWidth, 60);
+        [btn setImage:icon forState:UIControlStateNormal];
+        [btn setTitleColor:self.tintColor forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:10];
+        [btn addTarget:self action:@selector(mirrorVertical:) forControlEvents:UIControlEventTouchUpInside];
+        self.flipVerticalBtn = btn;
+        [self addSubview:self.flipVerticalBtn];
+        
+        icon = [UIImage bundleImageNamed:@"flip_h"];
+        btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        btn.frame = CGRectMake(self.frame.size.width - btnWidth, CGRectGetHeight(self.frame) - 115, btnWidth, 60);
+        [btn setImage:icon forState:UIControlStateNormal];
+        [btn setTitleColor:self.tintColor forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:10];
+        [btn addTarget:self action:@selector(mirrorHorizontal:) forControlEvents:UIControlEventTouchUpInside];
+        self.flipHorizontalBtn = btn;
+        [self addSubview:self.flipHorizontalBtn];
     }
     return self;
 }
@@ -550,6 +637,10 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
         return self.slider;
     } else if (CGRectContainsPoint(self.resetBtn.frame, point)) {
         return self.resetBtn;
+    } else if (CGRectContainsPoint(self.flipVerticalBtn.frame, point)) {
+        return self.flipVerticalBtn;
+    } else if (CGRectContainsPoint(self.flipHorizontalBtn.frame, point)) {
+        return self.flipHorizontalBtn;
     } else if (CGRectContainsPoint(CGRectInset(self.cropView.frame, -kCropViewHotArea, -kCropViewHotArea), point) && !CGRectContainsPoint(CGRectInset(self.cropView.frame, kCropViewHotArea, kCropViewHotArea), point)) {
         return self.cropView;
     }
@@ -564,6 +655,38 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
     self.manualZoomed = YES;
+}
+
+#pragma mark - Mirror
+
+- (CATransform3D)rotateTransform:(CATransform3D)initialTransform
+{
+    CATransform3D transform = initialTransform;
+    transform = CATransform3DRotate(transform, self.mirrorHorizontal * M_PI, 0, 1, 0);
+    transform = CATransform3DRotate(transform, self.mirrorVertical * M_PI, 1, 0, 0);
+    return transform;
+}
+
+- (void)rotateStateDidChange:(BOOL)vertical
+{
+    UIViewAnimationOptions opts = (vertical ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromRight);
+    [UIView transitionWithView:self.photoContentView.imageView
+                      duration:0.4
+                       options:opts
+                    animations:^{
+                        CATransform3D transform = [self rotateTransform:CATransform3DIdentity];
+                        self.photoContentView.imageView.layer.transform = transform;
+                    } completion:NULL];
+}
+
+-(void)mirrorVertical:(id)sender{
+    self.mirrorVertical = !self.mirrorVertical;
+    [self rotateStateDidChange:YES];
+}
+
+-(void)mirrorHorizontal:(id)sender{
+    self.mirrorHorizontal = !self.mirrorHorizontal;
+    [self rotateStateDidChange:NO];
 }
 
 #pragma mark - Crop View Delegate
@@ -594,7 +717,7 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
     if (scaleFrame.size.height >= self.scrollView.bounds.size.height) {
         scaleFrame.size.height = self.scrollView.bounds.size.height - 1;
     }
-    
+
     CGPoint contentOffset = self.scrollView.contentOffset;
     CGPoint contentOffsetCenter = CGPointMake(contentOffset.x + self.scrollView.bounds.size.width / 2, contentOffset.y + self.scrollView.bounds.size.height / 2);
     CGRect bounds = self.scrollView.bounds;
@@ -607,12 +730,14 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
     [UIView animateWithDuration:0.25 animations:^{
         // animate crop view
         cropView.bounds = CGRectMake(0, 0, newCropBounds.size.width, newCropBounds.size.height);
+        NSLog(@"NEW CROP VIEW FRAME ::: %@", NSStringFromCGRect(cropView.bounds));
         cropView.center = CGPointMake(CGRectGetWidth(self.frame) / 2, self.centerY);
         
         // zoom the specified area of scroll view
         CGRect zoomRect = [self convertRect:scaleFrame toView:self.scrollView.photoContentView];
         [self.scrollView zoomToRect:zoomRect animated:NO];
     }];
+    
 
     self.manualZoomed = YES;
     
@@ -706,7 +831,7 @@ typedef NS_ENUM(NSInteger, CropCornerType) {
     [self.cropView dismissGridLines];
 }
 
-- (void)resetBtnTapped:(id)sender
+- (void)resetPhoto
 {
     [UIView animateWithDuration:0.25 animations:^{
         self.angle = 0;

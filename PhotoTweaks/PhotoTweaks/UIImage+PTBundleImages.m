@@ -14,7 +14,7 @@ static NSString * const kBundle = @"PhotoTweaks.bundle";
 
 +(UIImage *)bundleImageNamed:(NSString *)name
 {
-    NSString *resourceName = [NSString stringWithFormat:@"%@/%@", kBundle, name];
+    NSString *resourceName = [NSString stringWithFormat:@"%@", name];
     //NSURL *url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"png"];
     NSString *path = [[NSBundle mainBundle] pathForResource:resourceName ofType:@"png"];
     UIImage *img = [UIImage imageWithContentsOfFile:path];

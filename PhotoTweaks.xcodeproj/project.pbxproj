@@ -16,6 +16,20 @@
 		CBD5FA671A28425300D4D520 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBD5FA651A28425300D4D520 /* LaunchScreen.xib */; };
 		CBD5FA731A28425300D4D520 /* PhotoTweaksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD5FA721A28425300D4D520 /* PhotoTweaksTests.m */; };
 		CBDE57B71A2CAA0700285CFF /* PhotoTweakView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBDE57B61A2CAA0600285CFF /* PhotoTweakView.m */; };
+		F4443F761C19071E0055F213 /* crop.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F731C19071E0055F213 /* crop.png */; };
+		F4443F771C19071E0055F213 /* crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F741C19071E0055F213 /* crop@2x.png */; };
+		F4443F781C19071E0055F213 /* crop@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F751C19071E0055F213 /* crop@3x.png */; };
+		F4443F7B1C19082C0055F213 /* CropOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4443F7A1C19082C0055F213 /* CropOptionsView.m */; };
+		F4443F861C190C5D0055F213 /* aspect-ratio-3-to-2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F7C1C190C5D0055F213 /* aspect-ratio-3-to-2@2x.png */; };
+		F4443F871C190C5D0055F213 /* aspect-ratio-4-to-3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F7D1C190C5D0055F213 /* aspect-ratio-4-to-3@2x.png */; };
+		F4443F881C190C5D0055F213 /* aspect-ratio-5-to-3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F7E1C190C5D0055F213 /* aspect-ratio-5-to-3@2x.png */; };
+		F4443F891C190C5D0055F213 /* aspect-ratio-5-to-4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F7F1C190C5D0055F213 /* aspect-ratio-5-to-4@2x.png */; };
+		F4443F8A1C190C5D0055F213 /* aspect-ratio-6-to-4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F801C190C5D0055F213 /* aspect-ratio-6-to-4@2x.png */; };
+		F4443F8B1C190C5D0055F213 /* aspect-ratio-7-to-5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F811C190C5D0055F213 /* aspect-ratio-7-to-5@2x.png */; };
+		F4443F8C1C190C5D0055F213 /* aspect-ratio-10-to-8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F821C190C5D0055F213 /* aspect-ratio-10-to-8@2x.png */; };
+		F4443F8D1C190C5D0055F213 /* aspect-ratio-16-to-9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F831C190C5D0055F213 /* aspect-ratio-16-to-9@2x.png */; };
+		F4443F8E1C190C5D0055F213 /* aspect-ratio-original@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F841C190C5D0055F213 /* aspect-ratio-original@2x.png */; };
+		F4443F8F1C190C5D0055F213 /* aspect-ratio-square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4443F851C190C5D0055F213 /* aspect-ratio-square@2x.png */; };
 		F446D1061ACB1C95001DD4F5 /* UIButton+PTButtonTitleTweak.m in Sources */ = {isa = PBXBuildFile; fileRef = F446D1051ACB1C95001DD4F5 /* UIButton+PTButtonTitleTweak.m */; };
 		F446D11B1ACB2CFB001DD4F5 /* UIImage+PTBundleImages.m in Sources */ = {isa = PBXBuildFile; fileRef = F446D11A1ACB2CFB001DD4F5 /* UIImage+PTBundleImages.m */; };
 		F446D1251ACB2DE2001DD4F5 /* flip_h.png in Resources */ = {isa = PBXBuildFile; fileRef = F446D11C1ACB2DE2001DD4F5 /* flip_h.png */; };
@@ -57,6 +71,21 @@
 		CBD5FA721A28425300D4D520 /* PhotoTweaksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoTweaksTests.m; sourceTree = "<group>"; };
 		CBDE57B51A2CAA0600285CFF /* PhotoTweakView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTweakView.h; sourceTree = "<group>"; };
 		CBDE57B61A2CAA0600285CFF /* PhotoTweakView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTweakView.m; sourceTree = "<group>"; };
+		F4443F731C19071E0055F213 /* crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crop.png; sourceTree = "<group>"; };
+		F4443F741C19071E0055F213 /* crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "crop@2x.png"; sourceTree = "<group>"; };
+		F4443F751C19071E0055F213 /* crop@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "crop@3x.png"; sourceTree = "<group>"; };
+		F4443F791C19082C0055F213 /* CropOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropOptionsView.h; sourceTree = "<group>"; };
+		F4443F7A1C19082C0055F213 /* CropOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropOptionsView.m; sourceTree = "<group>"; };
+		F4443F7C1C190C5D0055F213 /* aspect-ratio-3-to-2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-3-to-2@2x.png"; sourceTree = "<group>"; };
+		F4443F7D1C190C5D0055F213 /* aspect-ratio-4-to-3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-4-to-3@2x.png"; sourceTree = "<group>"; };
+		F4443F7E1C190C5D0055F213 /* aspect-ratio-5-to-3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-5-to-3@2x.png"; sourceTree = "<group>"; };
+		F4443F7F1C190C5D0055F213 /* aspect-ratio-5-to-4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-5-to-4@2x.png"; sourceTree = "<group>"; };
+		F4443F801C190C5D0055F213 /* aspect-ratio-6-to-4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-6-to-4@2x.png"; sourceTree = "<group>"; };
+		F4443F811C190C5D0055F213 /* aspect-ratio-7-to-5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-7-to-5@2x.png"; sourceTree = "<group>"; };
+		F4443F821C190C5D0055F213 /* aspect-ratio-10-to-8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-10-to-8@2x.png"; sourceTree = "<group>"; };
+		F4443F831C190C5D0055F213 /* aspect-ratio-16-to-9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-16-to-9@2x.png"; sourceTree = "<group>"; };
+		F4443F841C190C5D0055F213 /* aspect-ratio-original@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-original@2x.png"; sourceTree = "<group>"; };
+		F4443F851C190C5D0055F213 /* aspect-ratio-square@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aspect-ratio-square@2x.png"; sourceTree = "<group>"; };
 		F446D1041ACB1C95001DD4F5 /* UIButton+PTButtonTitleTweak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+PTButtonTitleTweak.h"; sourceTree = "<group>"; };
 		F446D1051ACB1C95001DD4F5 /* UIButton+PTButtonTitleTweak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+PTButtonTitleTweak.m"; sourceTree = "<group>"; };
 		F446D1191ACB2CFB001DD4F5 /* UIImage+PTBundleImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+PTBundleImages.h"; sourceTree = "<group>"; };
@@ -162,6 +191,8 @@
 				F446D1051ACB1C95001DD4F5 /* UIButton+PTButtonTitleTweak.m */,
 				F446D1191ACB2CFB001DD4F5 /* UIImage+PTBundleImages.h */,
 				F446D11A1ACB2CFB001DD4F5 /* UIImage+PTBundleImages.m */,
+				F4443F791C19082C0055F213 /* CropOptionsView.h */,
+				F4443F7A1C19082C0055F213 /* CropOptionsView.m */,
 			);
 			path = PhotoTweaks;
 			sourceTree = "<group>";
@@ -169,6 +200,19 @@
 		F446D0E31ACB1A81001DD4F5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F4443F7C1C190C5D0055F213 /* aspect-ratio-3-to-2@2x.png */,
+				F4443F7D1C190C5D0055F213 /* aspect-ratio-4-to-3@2x.png */,
+				F4443F7E1C190C5D0055F213 /* aspect-ratio-5-to-3@2x.png */,
+				F4443F7F1C190C5D0055F213 /* aspect-ratio-5-to-4@2x.png */,
+				F4443F801C190C5D0055F213 /* aspect-ratio-6-to-4@2x.png */,
+				F4443F811C190C5D0055F213 /* aspect-ratio-7-to-5@2x.png */,
+				F4443F821C190C5D0055F213 /* aspect-ratio-10-to-8@2x.png */,
+				F4443F831C190C5D0055F213 /* aspect-ratio-16-to-9@2x.png */,
+				F4443F841C190C5D0055F213 /* aspect-ratio-original@2x.png */,
+				F4443F851C190C5D0055F213 /* aspect-ratio-square@2x.png */,
+				F4443F731C19071E0055F213 /* crop.png */,
+				F4443F741C19071E0055F213 /* crop@2x.png */,
+				F4443F751C19071E0055F213 /* crop@3x.png */,
 				F446D11C1ACB2DE2001DD4F5 /* flip_h.png */,
 				F446D11D1ACB2DE2001DD4F5 /* flip_h@2x.png */,
 				F446D11E1ACB2DE2001DD4F5 /* flip_h@3x.png */,
@@ -262,18 +306,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4443F891C190C5D0055F213 /* aspect-ratio-5-to-4@2x.png in Resources */,
+				F4443F8F1C190C5D0055F213 /* aspect-ratio-square@2x.png in Resources */,
+				F4443F761C19071E0055F213 /* crop.png in Resources */,
 				F446D12B1ACB2DE2001DD4F5 /* flipKnob.png in Resources */,
+				F4443F861C190C5D0055F213 /* aspect-ratio-3-to-2@2x.png in Resources */,
+				F4443F771C19071E0055F213 /* crop@2x.png in Resources */,
+				F4443F8D1C190C5D0055F213 /* aspect-ratio-16-to-9@2x.png in Resources */,
 				F446D12D1ACB2DE2001DD4F5 /* flipKnob@3x.png in Resources */,
 				F446D12C1ACB2DE2001DD4F5 /* flipKnob@2x.png in Resources */,
 				CBD5FA621A28425300D4D520 /* Main.storyboard in Resources */,
+				F4443F871C190C5D0055F213 /* aspect-ratio-4-to-3@2x.png in Resources */,
+				F4443F8B1C190C5D0055F213 /* aspect-ratio-7-to-5@2x.png in Resources */,
 				F446D1271ACB2DE2001DD4F5 /* flip_h@3x.png in Resources */,
 				F446D1251ACB2DE2001DD4F5 /* flip_h.png in Resources */,
+				F4443F8A1C190C5D0055F213 /* aspect-ratio-6-to-4@2x.png in Resources */,
 				CBD5FA671A28425300D4D520 /* LaunchScreen.xib in Resources */,
 				F446D1281ACB2DE2001DD4F5 /* flip_v.png in Resources */,
+				F4443F781C19071E0055F213 /* crop@3x.png in Resources */,
 				F446D1261ACB2DE2001DD4F5 /* flip_h@2x.png in Resources */,
 				F446D12A1ACB2DE2001DD4F5 /* flip_v@3x.png in Resources */,
 				CBD5FA641A28425300D4D520 /* Images.xcassets in Resources */,
 				F446D1291ACB2DE2001DD4F5 /* flip_v@2x.png in Resources */,
+				F4443F881C190C5D0055F213 /* aspect-ratio-5-to-3@2x.png in Resources */,
+				F4443F8C1C190C5D0055F213 /* aspect-ratio-10-to-8@2x.png in Resources */,
+				F4443F8E1C190C5D0055F213 /* aspect-ratio-original@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +355,7 @@
 				CBD5FA591A28425300D4D520 /* main.m in Sources */,
 				CB3496FC1A3207E800C7EB0E /* PhotoTweaksViewController.m in Sources */,
 				CBDE57B71A2CAA0700285CFF /* PhotoTweakView.m in Sources */,
+				F4443F7B1C19082C0055F213 /* CropOptionsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

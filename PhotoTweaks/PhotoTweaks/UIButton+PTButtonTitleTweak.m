@@ -32,7 +32,7 @@
 
 - (void)centerVertically
 {
-    const CGFloat kDefaultPadding = 6.0f;
+    const CGFloat kDefaultPadding = 1.0f;
     
     [self centerVerticallyWithPadding:kDefaultPadding];
 }

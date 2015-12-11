@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CropOptionsView.h"
 
 @class CropView;
 
@@ -24,7 +25,15 @@
 
 @end
 
-@interface CropView : UIView
+@interface CropView : UIView{
+    
+}
+@property(nonatomic, assign)CGSize photoSize;
+@property(nonatomic, assign)CGFloat photoScale;
+
+-(void)setCropSize:(CGSize)size;
+-(void)setAspectRatio:(CropAspectRatio)aspectRatio;
+
 @end
 
 @interface PhotoTweakView : UIView
@@ -36,5 +45,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image;
 - (CGPoint)photoTranslation;
+
+- (void)resetPhoto;
 
 @end
